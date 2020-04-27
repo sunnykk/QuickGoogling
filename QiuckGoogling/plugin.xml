@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="QiuckGoogling.commands.category"
+            name="Sample Category">
+      </category>
+      <command
+            categoryId="QiuckGoogling.commands.category"
+            id="QiuckGoogling.commands.sampleCommand"
+            name="QiuckGoogling ClipBoard">
+      </command>
+   </extension>
+  
+   <extension
+         point="org.eclipse.ui.handlers">
+      <!-- 메뉴 첫번째 기능(클립보드 데이터 검색)을 위한 핸들러 -->
+      <handler
+            class="qiuckgoogling.handlers.SampleHandler"  
+            commandId="QiuckGoogling.commands.sampleCommand">
+      </handler>
+      <!-- 메뉴 두번째 기능(에러 모음창 활성화)을 위한 핸들러 추가 -->
+      <handler
+            class="qiuckgoogling.handlers.ErrorViewHandler"  
+            commandId="QiuckGoogling.commands.errorViewCommand">
+      </handler>
+      <!-- 메뉴 세번째 기능(선택된 텍스트 검색)을 위한 핸들러 추가 -->
+      <handler
+            class="qiuckgoogling.handlers.SelectionTextHandler"  
+            commandId="QiuckGoogling.commands.selectionTextCommand">
+      </handler>
+   </extension>
+
+   <!-- 상단 메뉴 -->
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <menu
+               id="QiuckGoogling.menus.sampleMenu"
+               label="QGMenu"
+               mnemonic="M">
+            <!-- 첫번째 메뉴 -->
+            <command
+                  commandId="QiuckGoogling.commands.sampleCommand"
+                  label="SearchClipboard"
+                  id="QiuckGoogling.menus.sampleCommand"
+                  mnemonic="S">
+            </command>
+            <!-- 두번째 메뉴 추가 -->
+             <command
+                  commandId="QiuckGoogling.commands.errorViewCommand"
+                  label="ErrorView"
+                  id="QiuckGoogling.menus.errorViewCommand"
+                  mnemonic="S">
+            </command>
+            <!-- 세번째 메뉴 추가 -->
+             <command
+                  commandId="QiuckGoogling.commands.selectionTextCommand"
+                  label="SearchText"
+                  id="QiuckGoogling.menus.selectionTextCommand"
+                  mnemonic="S">
+            </command>
+         </menu>
+      </menuContribution>
+      
+      <!-- 툴바 추가 -->
+      <!-- <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar
+               id="QiuckGoogling.toolbars.sampleToolbar">
+            <command
+                  commandId="QiuckGoogling.commands.sampleCommand"
+                  icon="icons/QG.png"
+                  id="QiuckGoogling.toolbars.sampleCommand"
+                  tooltip="QiuckGoogling">
+            </command>
+         </toolbar>
+      </menuContribution> -->
+      
+      
+      <!-- 드래그 영역  popup:org.eclipse.jdt.ui.PackageExplorer-->
+      <menuContribution locationURI="popup:common.new.menu?after=new">
+		 <command
+		  commandId="QiuckGoogling.commands.selectionTextCommand"
+		  icon="icons/QG.png"
+		  label="QiuckGoogling2"
+		  mnemonic="S">
+		  <visibleWhen>
+		   <with variable="activeMenuSelection">
+    	   </with>
+		   
+		   <!--
+		   <equals value="org.eclipse.ui.DefaultTextEditor"/>
+		   
+		   <with variable="activeMenuSelection">
+		    <iterate ifEmpty="false">
+		     <adapt type="org.eclipse.core.resources.IResource">
+		      <test property="org.eclipse.core.resources.contentTypeId" value="org.eclipse.jdt.core.javaSource" />
+		     </adapt>
+		    </iterate>
+		   </with>
+		   -->
+		  </visibleWhen>
+		 </command>
+		</menuContribution>
+
+   </extension>
+   
+   <extension
+    point = "org.eclipse.ui.popupMenus">
+       <menuContribution locationURI="popup:org.eclipse.ui.editors">
+		 <command
+		  commandId="QiuckGoogling.commands.selectionTextCommand"
+		  icon="icons/QG.png"
+		  id="QiuckGoogling.menus.selectionTextCommand"
+		  label="QiuckGoogling"
+		  mnemonic="S">
+		  <visibleWhen>
+		   <with variable="activeMenuSelection">
+    	   </with>
+    	   </visibleWhen>
+    	  </command>
+    	</menuContribution>
+	</extension>
+	
+	<!-- 단축키 ctrl+q 실행 시 -->
+	<extension
+	      point="org.eclipse.ui.bindings">
+	   <key
+	         commandId="QiuckGoogling.commands.sampleCommand"
+	         contextId="org.eclipse.ui.contexts.window"
+	         sequence="M1+6"
+	         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+	   </key>
+	</extension>
+	
+	<extension
+      point="org.eclipse.ui.editors">
+	   <editor
+	         name="%javaEditorName"
+	         icon="icons/QG.png"
+	         extensions="jav"
+	         contributorClass="org.eclipse.ui.examples.javaeditor.JavaActionContributor"
+	         class="qiuckgoogling.editors.UserTextEditor"
+	         id="org.eclipse.ui.JavaEditor">
+	   </editor>
+	</extension>
+	
+	<extension
+         point="org.eclipse.jdt.ui.javaEditorTextHovers">
+      <hover
+            activate="true"
+            class="qiuckgoogling.editors.UserTextEditor"
+            id="id.path.to_your.hoverclass">
+      </hover>
+   </extension>
+
+</plugin>
